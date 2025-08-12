@@ -78,7 +78,6 @@ model ProductMetadata {
 
 model Category {
   id        Int                @id @default(autoincrement())
-  productId Int
   slug      String             @unique
   name      String
   createdAt DateTime           @default(now())
