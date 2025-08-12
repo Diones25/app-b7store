@@ -6,7 +6,7 @@ enum OrderByEnum {
   PRICE = 'price',
 }
 
-export class GetProductsQueryDto {
+export class ProductsQueryDto {
 
   @IsOptional()
   @IsString({ message: 'Deve ser uma string' })

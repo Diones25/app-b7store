@@ -1,15 +1,18 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { GetProductsQueryDto } from './dto/get-products-query-dto';
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { ProductsQueryDto } from './dto/products-query-dto';
 import { ProductsService } from './products.service';
 import { getAbsoluteImageUrl } from 'src/utils/get-absolute-image-url';
+import { ProductIdParamDto } from './dto/productId-param-dto';
 
 @Controller('products')
 export class ProductsController {
 
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    private readonly productsService: ProductsService
+  ) { }
 
   @Get()
-  async findAll(@Query() query: GetProductsQueryDto) {
+  async findAll(@Query() query: ProductsQueryDto) {
     const parsedLimit = query.limit ? parseInt(query.limit) : undefined;
     const parsedMetadata = query.metadata ? JSON.parse(query.metadata) : undefined;
 
@@ -26,5 +29,15 @@ export class ProductsController {
     }))
 
     return productsWithAbsoluteUrl;
+  }
+
+  @Get(':id')
+  async findOne(@Param() params: ProductIdParamDto) {
+    const product = await this.productsService.findOne(parseInt(params.id));
+    if (!product) return null;
+    return {
+      ...product,
+      images: product.images.map(image => getAbsoluteImageUrl(image))
+    }
   }
 }
