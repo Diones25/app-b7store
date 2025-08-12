@@ -119,6 +119,46 @@ export class ProductsService {
     }
   }
 
+  async findRelated(id: number, limit: number = 4) {
+    await this.categoryService.categoryNotFound(id);
+
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id
+      },
+      select: {
+        categoryId: true
+      }
+    });
+    if (!product) return [];
+
+    const products = await this.prisma.product.findMany({
+      where: {
+        categoryId: product.categoryId,
+        id: {
+          not: id
+        }
+      },
+      select: {
+        id: true,
+        label: true,
+        price: true,
+        images: {
+          take: 1,
+          orderBy: { id: 'asc' }
+        }
+      },
+      take: limit,
+      orderBy: { viewsCount: 'desc' }
+    });
+
+    return products.map(product => ({
+      ...product,
+      image: product.images[0] ? `media/products/${product.images[0].url}` : null,
+      images: undefined
+    }));
+  }
+
 
   async productNotFound(id: number) {
     const product = await this.prisma.product.findUnique({ where: { id } });
