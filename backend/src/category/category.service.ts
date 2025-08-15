@@ -14,6 +14,7 @@ export class CategoryService {
 
   async findOne(id: number) {
     await this.categoryNotFound(id);
+    this.logger.log(`Buscando uma categoria pelo id ${id}`);
     return this.prisma.category.findUnique({
       where: {
         id
@@ -28,6 +29,7 @@ export class CategoryService {
 
   async findCategorySlug(slug: string) {
     await this.categorySlugNotFound(slug);
+    this.logger.log(`Buscando os slugs da categoria pelo slug ${slug}`);
     return this.prisma.category.findFirst({
       where: {
         slug
@@ -42,6 +44,7 @@ export class CategoryService {
 
   async findMetadata(id: number) {
     await this.categoryNotFound(id);
+    this.logger.log(`Buscando os metadados da categoria pelo id ${id}`);
     return this.prisma.categoryMetadata.findMany({
       where: {
         categoryId: id
