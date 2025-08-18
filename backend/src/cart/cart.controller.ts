@@ -1,16 +1,17 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { FindCartDto } from './dto/find-cart.dto';
 import { ZipCodeCartDto } from './dto/zipcode-cart.dto';
+import { CalcularFreteDto } from './dto/calcular-frete.dto';
 
 @Controller('cart')
 export class CartController {
 
   constructor(private readonly cartService: CartService) { }
 
-  @Get('shipping') 
-  getShipping(@Query() query: ZipCodeCartDto) {
-    return this.cartService.getShipping(query.zipcode);
+  @Post('shipping') 
+  getShipping(@Body() body: CalcularFreteDto) {
+    return this.cartService.getShipping(body);
   }
   
   @Post('mount')
