@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { BannersService } from './banners.service';
-import { getAbsoluteImageUrl } from 'src/utils/get-absolute-image-url';
+import { getAbsoluteImageUrl } from '../utils/get-absolute-image-url';
 
 @Controller('banners')
 export class BannersController {

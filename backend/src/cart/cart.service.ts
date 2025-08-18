@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { ProductsService } from 'src/products/products.service';
-import { Product } from 'src/products/types/product';
-import { getAbsoluteImageUrl } from 'src/utils/get-absolute-image-url';
+import { PrismaService } from '../prisma/prisma.service';
+import { ProductsService } from '../products/products.service';
+import { Product } from '../products/types/product';
+import { getAbsoluteImageUrl } from '../utils/get-absolute-image-url';
 import { CalcularFreteDto } from './dto/calcular-frete.dto';
 
 @Injectable()

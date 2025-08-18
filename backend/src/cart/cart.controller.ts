@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { FindCartDto } from './dto/find-cart.dto';
-import { ZipCodeCartDto } from './dto/zipcode-cart.dto';
 import { CalcularFreteDto } from './dto/calcular-frete.dto';
 
 @Controller('cart')

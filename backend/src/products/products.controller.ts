@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ProductsQueryDto } from './dto/products-query-dto';
 import { ProductsService } from './products.service';
-import { getAbsoluteImageUrl } from 'src/utils/get-absolute-image-url';
+import { getAbsoluteImageUrl } from '../utils/get-absolute-image-url';
 import { ProductIdParamDto } from './dto/productId-param-dto';
 import { ProductIdParamRelatedDto } from './dto/productId-param-related-dto';
 import { ProductsQueryRelatedDto } from './dto/products-query-related-dto';
