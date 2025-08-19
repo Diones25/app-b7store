@@ -6,6 +6,7 @@ import { CategoryModule } from './category/category.module';
 import { CartModule } from './cart/cart.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    UserModule
+    UserModule,
+    AuthModule
   ],
   controllers: [],
   providers: [],
