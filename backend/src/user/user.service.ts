@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { hash, compare } from 'bcrypt';
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -13,18 +13,18 @@ export class UserService {
   private readonly logger = new Logger(UserService.name);
 
   async create(createUserDto: CreateUserDto) {
-    const emailExists = await this.prisma.user.findUnique({
+    const existingUser = await this.prisma.user.findUnique({
       where: {
         email: createUserDto.email
       }
     });
 
-    if (emailExists) {
+    if (existingUser) {
       this.logger.error('E-mail ja cadastrado');
       throw new BadRequestException('E-mail ja cadastrado');
     }
 
-    const hashPassword = await hash(createUserDto.password, 10);
+    const hashPassword = await bcrypt.hash(createUserDto.password, 10);
     
     this.logger.log('Criando um novo usuário');
     const user = await this.prisma.user.create({
