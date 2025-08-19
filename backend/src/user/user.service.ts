@@ -1,7 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
+import { LoginUserDto } from './dto/login-user.dto';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class UserService {
@@ -42,5 +44,31 @@ export class UserService {
     }
   }
 
+  async loginUser(loginUserDto: LoginUserDto) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: loginUserDto.email.toLowerCase()
+      }
+    });
 
+    if (!user) {
+      this.logger.error('Acesso negado');
+      throw new UnauthorizedException('Acesso negado');
+    }
+
+    const validPassword = await compare(loginUserDto.password, user.password);
+
+    if (!validPassword) {
+      this.logger.error('Acesso negado');
+      throw new UnauthorizedException('Acesso negado');
+    }
+
+    const token = v4();
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { token }
+    });
+
+    return { token };
+  }
 }
