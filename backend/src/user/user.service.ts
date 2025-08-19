@@ -35,11 +35,6 @@ export class UserService {
       }
     });
 
-    if (!user) {
-      this.logger.log('E-mail já cadastrado');
-      throw new BadRequestException('E-mail já cadastrado');
-    }
-
     return {
       id: user.id,
       name: user.name,
