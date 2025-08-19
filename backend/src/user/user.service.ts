@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from "bcrypt";
@@ -39,6 +39,30 @@ export class UserService {
       id: user.id,
       name: user.name,
       email: user.email
+    }
+  }
+
+  async findOne(id: number) {
+    await this.exists(id);
+
+    this.logger.log("Listando um usuário");
+    return this.prisma.user.findUnique({
+      where: {
+        id
+      }
+    });
+  }
+
+  async exists(id: number) {
+    const user = await this.prisma.user.count({
+      where: {
+        id
+      }
+    });
+
+    if (!user) {
+      this.logger.log("Aconteceu uma exceção");
+      throw new NotFoundException(`O usuário ${id} não existe`);
     }
   }
 }
