@@ -2,8 +2,6 @@ import { BadRequestException, Injectable, Logger, UnauthorizedException } from '
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hash, compare } from 'bcrypt';
-import { LoginUserDto } from './dto/login-user.dto';
-import { v4 } from 'uuid';
 
 @Injectable()
 export class UserService {
