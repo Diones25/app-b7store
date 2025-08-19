@@ -14,7 +14,7 @@ export class UserService {
   
   private readonly logger = new Logger(UserService.name);
 
-  async createUser(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const emailExists = await this.prisma.user.findUnique({
       where: {
         email: createUserDto.email
@@ -42,33 +42,5 @@ export class UserService {
       name: user.name,
       email: user.email
     }
-  }
-
-  async loginUser(loginUserDto: LoginUserDto) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: loginUserDto.email.toLowerCase()
-      }
-    });
-
-    if (!user) {
-      this.logger.error('Acesso negado');
-      throw new UnauthorizedException('Acesso negado');
-    }
-
-    const validPassword = await compare(loginUserDto.password, user.password);
-
-    if (!validPassword) {
-      this.logger.error('Acesso negado');
-      throw new UnauthorizedException('Acesso negado');
-    }
-
-    const token = v4();
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: { token }
-    });
-
-    return { token };
   }
 }

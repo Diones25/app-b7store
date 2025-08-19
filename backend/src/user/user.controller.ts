@@ -8,13 +8,8 @@ export class UserController {
 
   constructor(private readonly userService: UserService) {}
 
-  @Post('register')
+  @Post()
   async create(@Body() body: CreateUserDto) {
-    return this.userService.createUser(body);
-  }
-
-  @Post('login')
-  async login(@Body() body: LoginUserDto) {
-    return this.userService.loginUser(body);
+    return this.userService.create(body);
   }
 }
