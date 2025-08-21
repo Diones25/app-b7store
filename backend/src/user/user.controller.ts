@@ -1,6 +1,8 @@
-import { Body, Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { CreateAdresseUserDto } from './dto/create-adress-user.dto';
+import { UserId } from '../decorators/user-id-decorator';
 
 
 @Controller('user')
@@ -10,7 +12,14 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get('addresses')
-  async userAdresses() {
+  async findAdresses() {
     return "OK";
+  }
+
+
+  @UseGuards(AuthGuard)
+  @Post('addresses')
+  async createAdresses(@UserId() userId: number, @Body() body: CreateAdresseUserDto) {
+    return this.userService.createAdress(userId, body);
   }
 }

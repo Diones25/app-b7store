@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, Logger, NotFoundException, Unauthorize
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from "bcrypt";
+import { CreateAdresseUserDto } from './dto/create-adress-user.dto';
 
 @Injectable()
 export class UserService {
@@ -64,5 +65,27 @@ export class UserService {
       this.logger.log("Aconteceu uma exceção");
       throw new NotFoundException(`O usuário ${id} não existe`);
     }
+  }
+
+  async createAdress(userId: number, address: CreateAdresseUserDto) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId
+      }
+    });
+
+    if (!user) {
+      this.logger.error(`Usuário com ID ${userId} não encontrado`);
+      throw new NotFoundException(`Usuário com ID ${userId} não encontrado`);
+    }
+
+    this.logger.log("Criando um novo endereço para o usuário");
+
+    return this.prisma.userAddress.create({
+      data: {
+        ...address,
+        userId
+      }
+    });               
   }
 }
