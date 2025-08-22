@@ -12,8 +12,8 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get('addresses')
-  async findAdresses() {
-    return "OK";
+  async findAdresses(@UserId() userId: number) {
+    return this.userService.findAdresses(userId);
   }
 
 

@@ -68,15 +68,10 @@ export class UserService {
   }
 
   async createAdress(userId: number, address: CreateAdresseUserDto) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: userId
-      }
-    });
 
-    if (!user) {
-      this.logger.error(`Usuário com ID ${userId} não encontrado`);
-      throw new NotFoundException(`Usuário com ID ${userId} não encontrado`);
+    if (!userId) {
+      this.logger.error(`Acesso não autorizado`);
+      throw new UnauthorizedException(`Acesso não autorizado`);
     }
 
     this.logger.log("Criando um novo endereço para o usuário");
@@ -87,5 +82,30 @@ export class UserService {
         userId
       }
     });               
+  }
+
+  async findAdresses(userId: number) {
+    if (!userId) {
+      this.logger.error(`Acesso não autorizado`);
+      throw new UnauthorizedException(`Acesso não autorizado`);
+    }
+
+    this.logger.log("Listando endereços do usuário");
+
+    return this.prisma.userAddress.findMany({
+      where: {
+        userId
+      },
+      select: {
+        id: true,
+        zipcode: true,
+        street: true,
+        number: true,
+        city: true,
+        state: true,
+        country: true,
+        complement: true
+      }
+    });
   }
 }
