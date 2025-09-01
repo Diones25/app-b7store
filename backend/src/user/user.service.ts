@@ -108,4 +108,25 @@ export class UserService {
       }
     });
   }
+
+  async getAddressById(userId: number, addressId: number) {
+    this.logger.log("Listando endereços do usuário");
+
+    return this.prisma.userAddress.findFirst({
+      where: {
+        id: addressId,
+        userId
+      },
+      select: {
+        id: true,
+        zipcode: true,
+        street: true,
+        number: true,
+        city: true,
+        state: true,
+        country: true,
+        complement: true
+      }
+    });
+  }
 }

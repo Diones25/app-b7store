@@ -7,6 +7,7 @@ import { CartModule } from './cart/cart.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    OrderModule
   ],
   controllers: [],
   providers: [],

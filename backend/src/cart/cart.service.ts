@@ -6,6 +6,9 @@ import { ProductsService } from '../products/products.service';
 import { Product } from '../products/types/product';
 import { getAbsoluteImageUrl } from '../utils/get-absolute-image-url';
 import { CalcularFreteDto } from './dto/calcular-frete.dto';
+import { CartFinishDto } from './dto/cart-finish.dto';
+import { UserService } from 'src/user/user.service';
+import { OrderService } from 'src/order/order.service';
 
 @Injectable()
 export class CartService {
@@ -16,7 +19,9 @@ export class CartService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly productsService: ProductsService,
-    private readonly configService: ConfigService
+    private readonly userService: UserService,
+    private readonly configService: ConfigService,
+    private readonly orderService: OrderService
   ) {
     this.apiKey = this.configService.get<string>('MELHOR_ENVIO_API_KEY');
     this.userAgent = this.configService.get<string>('EMAIL_USER_AGENT');
@@ -61,5 +66,29 @@ export class CartService {
       throw new BadRequestException(JSON.stringify(error.response?.data) ,'Erro ao buscar dados de frete');
     }
 
+  }
+
+  async finish(userId: number, cartFinishDto: CartFinishDto) {
+
+    const address = await this.userService.getAddressById(userId, cartFinishDto.AddressId);
+    if (!address) {
+      this.logger.error('Endereço não encontrado');
+      throw new BadRequestException('Endereço não encontrado');
+    }
+
+    const shippingCost = 7;
+    const shippingDays = 3;
+
+    const orderId = await this.orderService.createOrder({
+      userId,
+      address,
+      shippingCost,
+      shippingDays,
+      cart: cartFinishDto.cart
+    });
+
+    // TODO: Integrar meio de pagamento
+    let urlPayment = '';
+    return urlPayment;
   }
 }
