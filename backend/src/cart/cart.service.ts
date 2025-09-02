@@ -9,6 +9,7 @@ import { CalcularFreteDto } from './dto/calcular-frete.dto';
 import { CartFinishDto } from './dto/cart-finish.dto';
 import { UserService } from 'src/user/user.service';
 import { OrderService } from 'src/order/order.service';
+import { PaymentService } from 'src/payment/payment.service';
 
 @Injectable()
 export class CartService {
@@ -17,11 +18,11 @@ export class CartService {
   private readonly apiUrlMelhorEnvio: string = 'https://sandbox.melhorenvio.com.br/api/v2/me/shipment/calculate';
 
   constructor(
-    private readonly prisma: PrismaService,
     private readonly productsService: ProductsService,
     private readonly userService: UserService,
     private readonly configService: ConfigService,
-    private readonly orderService: OrderService
+    private readonly orderService: OrderService,
+    private readonly paymentService: PaymentService
   ) {
     this.apiKey = this.configService.get<string>('MELHOR_ENVIO_API_KEY');
     this.userAgent = this.configService.get<string>('EMAIL_USER_AGENT');
@@ -87,8 +88,17 @@ export class CartService {
       cart: cartFinishDto.cart
     });
 
+    if (!orderId) {
+      this.logger.error('Erro ao criar pedido');
+      throw new BadRequestException('Erro ao criar pedido');
+    }
+
     // TODO: Integrar meio de pagamento
-    let urlPayment = 'www.teste.com/pagamento/'+orderId;
+    let urlPayment = await this.paymentService.createPaymentLink({
+      cart: cartFinishDto.cart,
+      shippingCost,
+      orderId
+    });
     return {
       urlPayment: urlPayment,
     };
