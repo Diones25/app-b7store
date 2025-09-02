@@ -8,8 +8,8 @@ export class CartFinishDto {
   cart: CartItemDto[];
 
   @Type(() => Number) 
-  @IsInt({ message: 'O campo AddressId deve ser um número inteiro' })
-  AddressId: number;
+  @IsInt({ message: 'O campo addressId deve ser um número inteiro' })
+  addressId: number;
 }
 
 export class CartItemDto {

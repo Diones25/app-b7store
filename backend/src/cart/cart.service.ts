@@ -70,7 +70,7 @@ export class CartService {
 
   async finish(userId: number, cartFinishDto: CartFinishDto) {
 
-    const address = await this.userService.getAddressById(userId, cartFinishDto.AddressId);
+    const address = await this.userService.getAddressById(userId, cartFinishDto.addressId);
     if (!address) {
       this.logger.error('Endereço não encontrado');
       throw new BadRequestException('Endereço não encontrado');

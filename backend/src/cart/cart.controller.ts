@@ -24,6 +24,6 @@ export class CartController {
   @UseGuards(AuthGuard)
   @Post('finish')
   finish(@UserId() userId: number, @Body() cartFinishDto: CartFinishDto) {
-    return this.cartService.finish();
+    return this.cartService.finish(userId, cartFinishDto);
   }
 }
