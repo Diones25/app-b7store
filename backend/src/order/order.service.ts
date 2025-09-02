@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { ProductsService } from 'src/products/products.service';
-import { CreateOrderParams } from 'src/types/create-order-params';
-import { OrderItems } from 'src/types/order-items';
+import { PrismaService } from '../prisma/prisma.service';
+import { ProductsService } from '../products/products.service';
+import { CreateOrderParams } from '../types/create-order-params';
+import { OrderItems } from '../types/order-items';
 
 @Injectable()
 export class OrderService {

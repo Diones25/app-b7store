@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ProductsService } from '../products/products.service';
 import { StripeCheckoutSessionParams } from '../types/stripe-checkout-session-params';
-import { StripeLineItems } from 'src/types/stripe-line-items';
+import { StripeLineItems } from '../types/stripe-line-items';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 

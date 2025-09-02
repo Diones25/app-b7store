@@ -1,15 +1,14 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { PrismaService } from '../prisma/prisma.service';
 import { ProductsService } from '../products/products.service';
 import { Product } from '../products/types/product';
 import { getAbsoluteImageUrl } from '../utils/get-absolute-image-url';
 import { CalcularFreteDto } from './dto/calcular-frete.dto';
 import { CartFinishDto } from './dto/cart-finish.dto';
-import { UserService } from 'src/user/user.service';
-import { OrderService } from 'src/order/order.service';
-import { PaymentService } from 'src/payment/payment.service';
+import { UserService } from '../user/user.service';
+import { OrderService } from '../order/order.service';
+import { PaymentService } from '../payment/payment.service';
 
 @Injectable()
 export class CartService {

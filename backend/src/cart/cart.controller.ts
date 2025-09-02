@@ -2,8 +2,8 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { FindCartDto } from './dto/find-cart.dto';
 import { CalcularFreteDto } from './dto/calcular-frete.dto';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { UserId } from 'src/decorators/user-id-decorator';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { UserId } from '../decorators/user-id-decorator';
 import { CartFinishDto } from './dto/cart-finish.dto';
 
 @Controller('cart')
