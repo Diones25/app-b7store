@@ -17,13 +17,13 @@ export class OrderService {
   async createOrder({ userId, address, shippingCost, shippingDays, cart }: CreateOrderParams){
     this.logger.log('Criando um novo pedido');
 
-    let total = 0;
+    let subtotal = 0;
     let orderItems: OrderItems = [];
 
     for (let cartItem of cart) {
       const product = await this.productsService.findOne(cartItem.productId);
       if (product) {
-        total += product.price * cartItem.quantity;
+        subtotal += product.price * cartItem.quantity;
 
         orderItems.push({
           productId: product.id,
@@ -33,10 +33,12 @@ export class OrderService {
       }
     }
 
+    let total = subtotal + shippingCost;
+
     const order = await this.prisma.order.create({
       data: {
         userId,
-        total,
+        total: total,
         shippingCost,
         shippingDays,
         shippingZipcode: address.zipcode,
