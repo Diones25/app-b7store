@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
 import { PaymentModule } from './payment/payment.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { PaymentModule } from './payment/payment.module';
     UserModule,
     AuthModule,
     OrderModule,
-    PaymentModule
+    PaymentModule,
+    StripeModule
   ],
   controllers: [],
   providers: [],
