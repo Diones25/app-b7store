@@ -63,7 +63,7 @@ export class StripeService {
       success_url: `${this.frontendUrl}/cart/sucess?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${this.frontendUrl}/my-orders`
     });
-
+    this.logger.log(`Sessão do Stripe criada: ${session.id}`);
     return session;
   }
 }

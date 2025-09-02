@@ -99,6 +99,7 @@ export class CartService {
       shippingCost,
       orderId
     });
+    this.logger.log(`Link de pagamento criado: ${urlPayment}`);
     return {
       urlPayment: urlPayment,
     };

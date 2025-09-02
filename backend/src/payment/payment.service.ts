@@ -11,6 +11,7 @@ export class PaymentService {
 
   async createPaymentLink({ cart, shippingCost, orderId }: CreateLinkParams): Promise<string | null> {
     try {
+      this.logger.log('Criando link de pagamento');
       const session = await this.stripeService.createStripeCheckoutSession({ cart, shippingCost, orderId });
       if (!session.url) return null;
       return session.url;
