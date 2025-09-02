@@ -88,7 +88,9 @@ export class CartService {
     });
 
     // TODO: Integrar meio de pagamento
-    let urlPayment = '';
-    return urlPayment;
+    let urlPayment = 'www.teste.com/pagamento/'+orderId;
+    return {
+      urlPayment: urlPayment,
+    };
   }
 }
