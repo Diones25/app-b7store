@@ -64,8 +64,6 @@ export class StripeService {
       cancel_url: `${this.frontendUrl}/my-orders`
     });
 
-    return {
-      session: session
-    };
+    return session;
   }
 }
