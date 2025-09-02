@@ -8,6 +8,7 @@ import Stripe from 'stripe';
 @Injectable()
 export class StripeService {
   private readonly apiSecretKeyStripe: string | undefined;
+  private readonly frontendUrl: string | undefined;
   private stripe: Stripe;
 
   constructor(
@@ -16,6 +17,7 @@ export class StripeService {
   ) {
     this.apiSecretKeyStripe = this.configService.get<string>('STRIPE_SECRET_KEY');
     this.stripe = new Stripe(this.apiSecretKeyStripe as string);
+    this.frontendUrl = this.configService.get<string>('FRONTEND_URL');
   }
   
   private readonly logger = new Logger(StripeService.name);
@@ -52,6 +54,18 @@ export class StripeService {
       });
     }
 
+    const session = await this.stripe.checkout.sessions.create({
+      line_items: stripeLineItems,
+      mode: 'payment',
+      metadata: {
+        orderId: orderId.toString()
+      },
+      success_url: `${this.frontendUrl}/cart/sucess?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${this.frontendUrl}/my-orders`
+    });
 
+    return {
+      session: session
+    };
   }
 }
