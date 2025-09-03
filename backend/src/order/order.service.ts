@@ -57,4 +57,16 @@ export class OrderService {
     if (!order) return null;
     return order.id;
   }
+
+  async updateOrderStatus(orderId: number, status: 'paid' | 'cancelled') {
+    this.logger.log('Atualizando o status do pedido');
+    return this.prisma.order.update({
+      where: {
+        id: orderId
+      },
+      data: {
+        status
+      }
+    });
+  }
 }

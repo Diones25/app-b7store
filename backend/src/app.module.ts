@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
 import { PaymentModule } from './payment/payment.module';
 import { StripeModule } from './stripe/stripe.module';
+import { WebhookModule } from './webhook/webhook.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { StripeModule } from './stripe/stripe.module';
     AuthModule,
     OrderModule,
     PaymentModule,
-    StripeModule
+    StripeModule,
+    WebhookModule
   ],
   controllers: [],
   providers: [],
