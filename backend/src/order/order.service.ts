@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ProductsService } from '../products/products.service';
 import { CreateOrderParams } from '../types/create-order-params';
@@ -83,5 +83,27 @@ export class OrderService {
     return {
       orderId: orderId
     }
+  }
+
+  async getUserOrders(userId: number) {
+    this.logger.log('Listando os pedidos de um usuário');
+    if (!userId) {
+      this.logger.error('Acesso negado');
+      throw new UnauthorizedException('Acesso negado');
+    }
+    return this.prisma.order.findMany({
+      where: {
+        userId
+      },
+      select: {
+        id: true,
+        status: true,
+        total: true,
+        createdAt: true
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
   }
 }
