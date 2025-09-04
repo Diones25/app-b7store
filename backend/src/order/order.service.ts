@@ -4,6 +4,8 @@ import { ProductsService } from '../products/products.service';
 import { CreateOrderParams } from '../types/create-order-params';
 import { OrderItems } from '../types/order-items';
 import { PaymentService } from 'src/payment/payment.service';
+import { OrderUserIdDto } from './dto/order-user-id.dto copy';
+import { getAbsoluteImageUrl } from 'src/utils/get-absolute-image-url';
 
 @Injectable()
 export class OrderService {
@@ -105,5 +107,66 @@ export class OrderService {
         createdAt: 'desc'
       }
     });
+  }
+
+  async getOrderById(id: number, userId: number) {
+    this.logger.log('Listando um pedido');
+    const order = await this.prisma.order.findFirst({
+      where: {
+        id: Number(id),
+        userId: Number(userId)
+      },
+      select: {
+        id: true,
+        status: true,
+        total: true,
+        shippingCost: true,
+        shippingDays: true,
+        shippingCity: true,
+        shippingComplement: true,
+        shippingCountry: true,
+        shippingNumber: true,
+        shippingState: true,
+        shippingStreet: true,
+        shippingZipcode: true,
+        createdAt: true,
+        orderItem: {
+          select: {
+            id: true,
+            quantity: true,
+            price: true,
+            product: {
+              select: {
+                id: true,
+                label: true,
+                price: true,
+                images: {
+                  take: 1,
+                  orderBy: { id: 'asc' }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!order) {
+      this.logger.error('Pedido não encontrado');
+      throw new BadRequestException('Pedido não encontrado');
+    }
+
+    return {
+      ...order,
+      orderItem: order.orderItem.map(item => ({
+          ...item,
+          product: {
+            ...item.product,
+            image: item.product.images[0] ? `media/products/${item.product.images[0].url}` : null,
+            images: undefined
+          }
+      }))
+    }
+
   }
 }

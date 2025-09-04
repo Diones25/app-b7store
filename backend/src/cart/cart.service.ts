@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { ProductsService } from '../products/products.service';
-import { Product } from '../products/types/product';
+import { Product } from '../types/product';
 import { getAbsoluteImageUrl } from '../utils/get-absolute-image-url';
 import { CalcularFreteDto } from './dto/calcular-frete.dto';
 import { CartFinishDto } from './dto/cart-finish.dto';
