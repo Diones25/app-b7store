@@ -20,4 +20,19 @@ export class PaymentService {
       throw new BadRequestException('Erro ao criar link de pagamento');
     }
   }
+
+  async getOrderIdFromSession(session_id: string) {
+    try {
+      const session = await this.stripeService.getStripeCheckoutSession(session_id);
+      const orderId = session.metadata?.orderId;
+      if (!orderId) {
+        this.logger.error('OrderId nao encontrado');
+        throw new BadRequestException('OrderId nao encontrado');
+      }
+      return parseInt(orderId);
+    } catch (error) {
+      this.logger.error('Erro ao buscar orderId da sessão', error);
+      throw new BadRequestException('Erro ao buscar orderId da sessão');
+    }
+  }
 }

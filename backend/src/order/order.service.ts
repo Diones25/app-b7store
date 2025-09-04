@@ -1,15 +1,17 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ProductsService } from '../products/products.service';
 import { CreateOrderParams } from '../types/create-order-params';
 import { OrderItems } from '../types/order-items';
+import { PaymentService } from 'src/payment/payment.service';
 
 @Injectable()
 export class OrderService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly productsService: ProductsService
+    private readonly productsService: ProductsService,
+    private readonly paymentService: PaymentService
   ) { }
   
   private readonly logger = new Logger(OrderService.name);
@@ -68,5 +70,18 @@ export class OrderService {
         status
       }
     });
+  }
+
+  async orderSession(session_id: string) {
+    this.logger.log('Buscando pedido pelo sessionId');
+    const orderId = await this.paymentService.getOrderIdFromSession(session_id);
+    if (!orderId) {
+      this.logger.error('Erro ao buscar pedido pelo sessionId');
+      throw new BadRequestException('Erro ao buscar pedido pelo sessionId');
+    }
+
+    return {
+      orderId: orderId
+    }
   }
 }

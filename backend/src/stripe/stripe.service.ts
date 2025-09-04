@@ -66,4 +66,8 @@ export class StripeService {
     this.logger.log(`Sessão do Stripe criada: ${session.id}`);
     return session;
   }
+
+  async getStripeCheckoutSession(session_id: string) {
+    return await this.stripe.checkout.sessions.retrieve(session_id);
+  }
 }
