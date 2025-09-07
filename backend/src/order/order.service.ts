@@ -3,9 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ProductsService } from '../products/products.service';
 import { CreateOrderParams } from '../types/create-order-params';
 import { OrderItems } from '../types/order-items';
-import { PaymentService } from 'src/payment/payment.service';
-import { OrderUserIdDto } from './dto/order-user-id.dto copy';
-import { getAbsoluteImageUrl } from 'src/utils/get-absolute-image-url';
+import { PaymentService } from '../payment/payment.service';
 
 @Injectable()
 export class OrderService {

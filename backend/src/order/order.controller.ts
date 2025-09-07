@@ -1,10 +1,10 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderSessionIdDto } from './dto/order-session-id.dto';
-import { UserId } from 'src/decorators/user-id-decorator';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { UserId } from '../decorators/user-id-decorator';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { OrderUserIdDto } from './dto/order-user-id.dto copy';
-import { getAbsoluteImageUrl } from 'src/utils/get-absolute-image-url';
+import { getAbsoluteImageUrl } from '../utils/get-absolute-image-url';
 
 @Controller('orders')
 export class OrderController {
