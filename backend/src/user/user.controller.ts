@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateAdresseUserDto } from './dto/create-adress-user.dto';
@@ -16,6 +16,10 @@ export class UserController {
     return this.userService.findAdresses(userId);
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return this.userService.findOne(id);
+  }
 
   @UseGuards(AuthGuard)
   @Post('addresses')

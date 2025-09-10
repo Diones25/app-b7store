@@ -49,7 +49,7 @@ export class UserService {
     this.logger.log("Listando um usuário");
     return this.prisma.user.findUnique({
       where: {
-        id
+        id: Number(id)
       }
     });
   }
@@ -57,12 +57,12 @@ export class UserService {
   async exists(id: number) {
     const user = await this.prisma.user.count({
       where: {
-        id
+        id: Number(id)
       }
     });
 
     if (!user) {
-      this.logger.log("Aconteceu uma exceção");
+      this.logger.error(`O usuário ${id} não existe`);
       throw new NotFoundException(`O usuário ${id} não existe`);
     }
   }
