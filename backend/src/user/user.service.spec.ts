@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { HttpException } from '@nestjs/common';
+import { HttpException, NotFoundException } from '@nestjs/common';
 import * as bcrypt from "bcrypt";
 
 //O código abaixo serve para mockar o bcrypt
@@ -109,6 +109,51 @@ describe('UserService', () => {
         name: 'Jhon',
         email: 'jhon@gmail.com'
       });
+    });
+  });
+
+  describe('Buscar um usuário', () => {
+    it('findOne - deve retornar o usuário quando existe', async () => {
+      const userId = 1;
+      const mockUser = {
+        id: 1,
+        name: 'Jhon',
+        email: 'jhon@gmail.com',
+        password: 'hashed_password'
+      };
+
+      // Mock: usuário existe
+      mockPrismaService.user.count.mockResolvedValueOnce(1);
+
+      // Mock: retorno do findUnique
+      mockPrismaService.user.findUnique.mockResolvedValueOnce(mockUser);
+
+      const result = await userService.findOne(userId);
+      expect(mockPrismaService.user.count).toHaveBeenCalledWith({
+        where: { id: userId }
+      });
+
+      expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
+        where: { id: userId }
+      });
+
+      expect(result).toEqual(mockUser);
+    });
+
+    it('findOne - deve lançar NotFoundException quando usuário não existe', async () => {
+      const userId = 999;
+
+      // Mock: usuário não existe
+      mockPrismaService.user.count.mockResolvedValueOnce(0);
+
+      await expect(userService.findOne(userId)).rejects.toThrow(NotFoundException);
+
+      expect(mockPrismaService.user.count).toHaveBeenCalledWith({
+        where: { id: userId }
+      });
+
+      // O método findUnique nunca deve ser chamado nesse caso
+      expect(mockPrismaService.user.findUnique).not.toHaveBeenCalled();
     });
   });
 });
