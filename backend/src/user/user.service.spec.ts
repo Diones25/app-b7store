@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { HttpException, NotFoundException } from '@nestjs/common';
 import * as bcrypt from "bcrypt";
+import { CreateAdresseUserDto } from './dto/create-adress-user.dto';
 
 //O código abaixo serve para mockar o bcrypt
 jest.mock('bcrypt', () => ({
@@ -21,6 +22,9 @@ describe('UserService', () => {
       count: jest.fn(),
       findMany: jest.fn(),
       findFirst: jest.fn()
+    },
+    userAddress: {
+      create: jest.fn()
     }
   }
   
@@ -154,6 +158,60 @@ describe('UserService', () => {
 
       // O método findUnique nunca deve ser chamado nesse caso
       expect(mockPrismaService.user.findUnique).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('createAdress', () => {
+    it('createAdress - Deve criando um novo endereço para o usuário', async () => {
+      const userId = 1; 
+      const createAdresseUserDto: CreateAdresseUserDto = {
+        zipcode: '62320005',
+        street: 'Rua de teste',
+        number: '12345',
+        city: 'Tianguá',
+        state: 'Ceará',
+        country: 'Brasil',
+        complement: 'Complemento de teste'
+      }
+
+      mockPrismaService.userAddress.create.mockResolvedValueOnce({
+        id: 2,
+        userId: 1,
+        zipcode: "62320-000",
+        street: "Stree teste",
+        number: "123",
+        city: "Tianguá",
+        state: "Ceará",
+        country: "Brasil",
+        complement: "Apt 1",
+        createdAt: "2025-09-16T01:46:44.811Z",
+        updatedAt: "2025-09-16T01:46:44.811Z"
+      });
+
+      const result = await userService.createAdress(userId, createAdresseUserDto);
+
+      expect(mockPrismaService.userAddress.create).toHaveBeenCalledTimes(1)
+      expect(mockPrismaService.userAddress.create).toHaveBeenCalledWith({
+        data: {
+          ...createAdresseUserDto,
+          userId
+        }
+      });
+
+      // Valida o retorno da função
+      expect(result).toEqual({
+        id: 2,
+        userId: 1,
+        zipcode: "62320-000",
+        street: "Stree teste",
+        number: "123",
+        city: "Tianguá",
+        state: "Ceará",
+        country: "Brasil",
+        complement: "Apt 1",
+        createdAt: "2025-09-16T01:46:44.811Z",
+        updatedAt: "2025-09-16T01:46:44.811Z"
+      });
     });
   });
 });
