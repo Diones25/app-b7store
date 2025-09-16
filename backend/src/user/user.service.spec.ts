@@ -253,4 +253,43 @@ describe('UserService', () => {
     });
   });
 
+  describe('getAddressById', () => {
+    it('getAddressById - Deve listar um endereço do usuário', async () => {
+      const userId = 1;
+      const addressId = 1;
+      const mockUserAdresses = {
+        id: 1,
+        zipcode: "62320-000",
+        street: "Stree teste",
+        number: "123",
+        city: "Tianguá",
+        state: "Ceará",
+        country: "Brasil",
+        complement: "Apt 1"
+      };
+
+      mockPrismaService.userAddress.findFirst.mockResolvedValueOnce(mockUserAdresses);
+
+      const result = await userService.getAddressById(userId, addressId);
+
+      expect(mockPrismaService.userAddress.findFirst).toHaveBeenCalledWith({
+        where: {
+          id: addressId,
+          userId: userId
+        },
+        select: {
+          id: true,
+          zipcode: true,
+          street: true,
+          number: true,
+          city: true,
+          state: true,
+          country: true,
+          complement: true
+        }
+      });
+
+      expect(result).toEqual(mockUserAdresses);
+    });
+  });
 });

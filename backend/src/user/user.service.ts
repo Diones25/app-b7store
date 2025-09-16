@@ -99,7 +99,7 @@ export class UserService {
   }
 
   async getAddressById(userId: number, addressId: number) {
-    this.logger.log("Listando endereços do usuário");
+    this.logger.log("Listando um endereço do usuário");
 
     return this.prisma.userAddress.findFirst({
       where: {
