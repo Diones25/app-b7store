@@ -79,11 +79,6 @@ export class UserService {
   }
 
   async findAdresses(userId: number) {
-    if (!userId) {
-      this.logger.error(`Acesso não autorizado`);
-      throw new UnauthorizedException(`Acesso não autorizado`);
-    }
-
     this.logger.log("Listando endereços do usuário");
 
     return this.prisma.userAddress.findMany({
