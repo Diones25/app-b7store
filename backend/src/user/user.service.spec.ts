@@ -24,7 +24,9 @@ describe('UserService', () => {
       findFirst: jest.fn()
     },
     userAddress: {
-      create: jest.fn()
+      create: jest.fn(),
+      findMany: jest.fn(),
+      findFirst: jest.fn(),
     }
   }
   
