@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from "bcrypt";
@@ -22,7 +22,7 @@ export class UserService {
 
     if (existingUser) {
       this.logger.error('E-mail ja cadastrado');
-      throw new BadRequestException('E-mail ja cadastrado');
+      throw new HttpException('E-mail ja cadastrado', HttpStatus.CONFLICT);
     }
 
     const hashPassword = await bcrypt.hash(createUserDto.password, 10);
