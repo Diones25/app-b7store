@@ -68,12 +68,6 @@ export class UserService {
   }
 
   async createAdress(userId: number, address: CreateAdresseUserDto) {
-
-    if (!userId) {
-      this.logger.error(`Acesso não autorizado`);
-      throw new UnauthorizedException(`Acesso não autorizado`);
-    }
-
     this.logger.log("Criando um novo endereço para o usuário");
 
     return this.prisma.userAddress.create({
