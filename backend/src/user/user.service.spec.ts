@@ -218,39 +218,39 @@ describe('UserService', () => {
   });
 
   describe('findAdresses', () => {
-  it('findAdresses - Deve listar endereços do usuário', async () => {
-    const userId = 1;
-    const mockUserAdresses = {
-      city: "Tianguá",
-      complement: "complemento teste",
-      country: "Brasil",
-      id: 1,
-      number: "123",
-      state: "Ceará",
-      street: "Stree teste",
-      zipcode: "62320-000",
-    };
+    it('findAdresses - Deve listar endereços do usuário', async () => {
+      const userId = 1;
+      const mockUserAdresses = {
+        city: "Tianguá",
+        complement: "complemento teste",
+        country: "Brasil",
+        id: 1,
+        number: "123",
+        state: "Ceará",
+        street: "Stree teste",
+        zipcode: "62320-000",
+      };
 
-    mockPrismaService.userAddress.findMany.mockResolvedValueOnce([mockUserAdresses]);
+      mockPrismaService.userAddress.findMany.mockResolvedValueOnce([mockUserAdresses]);
 
-    const result = await userService.findAdresses(userId);
+      const result = await userService.findAdresses(userId);
 
-    expect(mockPrismaService.userAddress.findMany).toHaveBeenCalledWith({
-      where: { userId: userId },
-      select: {
-        id: true,
-        zipcode: true,
-        street: true,
-        number: true,
-        city: true,
-        state: true,
-        country: true,
-        complement: true
-      }
+      expect(mockPrismaService.userAddress.findMany).toHaveBeenCalledWith({
+        where: { userId: userId },
+        select: {
+          id: true,
+          zipcode: true,
+          street: true,
+          number: true,
+          city: true,
+          state: true,
+          country: true,
+          complement: true
+        }
+      });
+
+      expect(result).toEqual([mockUserAdresses]);
     });
-
-    expect(result).toEqual([mockUserAdresses]);
   });
-});
 
 });
