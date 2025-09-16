@@ -110,7 +110,5 @@ describe('UserService', () => {
         email: 'jhon@gmail.com'
       });
     });
-
-
   });
 });
