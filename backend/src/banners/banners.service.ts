@@ -10,10 +10,6 @@ export class BannersService {
   
   private readonly logger = new Logger(BannersService.name);
 
-  async create() {
-
-  }
-
   async findAll() {
     const banners = await this.prisma.banner.findMany({
       select: {
