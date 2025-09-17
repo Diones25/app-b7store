@@ -1,18 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BannersService } from './banners.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('BannersService', () => {
-  let service: BannersService;
+  let bannersService: BannersService;
+
+  const mockPrismaService = {
+    banner: {
+      findMany: jest.fn()
+    }
+  }
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [BannersService],
+      providers: [
+        BannersService,
+        {
+          provide: PrismaService,
+          useValue: mockPrismaService
+        }
+      ],
     }).compile();
 
-    service = module.get<BannersService>(BannersService);
+    bannersService = module.get<BannersService>(BannersService);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(bannersService).toBeDefined();
   });
 });
