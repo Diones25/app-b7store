@@ -10,8 +10,6 @@ export class CategoryService {
 
   private readonly logger = new Logger(CategoryService.name);
 
-  async findAll() { }
-
   async findOne(id: number) {
     await this.categoryNotFound(id);
     this.logger.log(`Buscando uma categoria pelo id ${id}`);
