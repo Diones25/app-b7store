@@ -4,12 +4,16 @@ import { PrismaService } from '../prisma/prisma.service';
 import { NotFoundException } from '@nestjs/common';
 
 describe('CategoryService', () => {
-  let service: CategoryService;
+  let categoryService: CategoryService;
   let prismaService: PrismaService;
 
   const mockPrismaService = {
     category: {
       findUnique: jest.fn(),
+      findFirst: jest.fn()
+    },
+    categoryMetadata: {
+      findMany: jest.fn()
     }
   }
 
@@ -17,14 +21,19 @@ describe('CategoryService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CategoryService,
-        { provide: PrismaService, useValue: mockPrismaService }
+        {
+          provide: PrismaService,
+          useValue: mockPrismaService
+        }
       ],
     }).compile();
 
-    service = module.get<CategoryService>(CategoryService);
+    categoryService = module.get<CategoryService>(CategoryService);
     prismaService = module.get<PrismaService>(PrismaService);
+  });
 
-    jest.clearAllMocks(); //Limpa os mocks antes de cada teste
+  beforeEach(() => {
+    jest.resetAllMocks();
   });
 
   describe('findOne', () => {
@@ -37,7 +46,7 @@ describe('CategoryService', () => {
         .mockResolvedValueOnce(mockCategory) // mock para categoryNotFound
         .mockResolvedValueOnce(mockCategory); // mock para findOne
 
-      const result = await service.findOne(1);
+      const result = await categoryService.findOne(1);
 
       expect(result).toEqual(mockCategory);
       expect(prismaService.category.findUnique).toHaveBeenCalledTimes(2);
@@ -50,7 +59,7 @@ describe('CategoryService', () => {
     it('deve lançar NotFoundException se a categoria não existir', () => {
       (prismaService.category.findUnique as jest.Mock).mockResolvedValueOnce(null);
 
-      expect(service.findOne(999)).rejects.toThrow(NotFoundException);
+      expect(categoryService.findOne(999)).rejects.toThrow(NotFoundException);
       expect(prismaService.category.findUnique).toHaveBeenCalledWith({ where: { id: 999 } });
       expect(prismaService.category.findUnique).toHaveBeenCalledTimes(1);
     });
