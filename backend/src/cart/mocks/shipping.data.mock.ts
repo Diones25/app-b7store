@@ -1,0 +1,1 @@
+export const mockShippingData = [{ price: 10, delivery_time: 3 }];

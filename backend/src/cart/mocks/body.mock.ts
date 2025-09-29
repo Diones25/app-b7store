@@ -1,0 +1,1 @@
+export const mockBody = { from: 'A', to: 'B' } as any;
