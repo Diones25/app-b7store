@@ -1,0 +1,1 @@
+export const mockPassword = '123456';
