@@ -87,7 +87,8 @@
       ".*\\.entity\\.ts$",
       "main.ts",
       "utils",
-      "prisma"
+      "prisma",
+      "auth/guards/mocks"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
