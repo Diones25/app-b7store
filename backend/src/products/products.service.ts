@@ -13,10 +13,6 @@ export class ProductsService {
   
   private readonly logger = new Logger(ProductsService.name);
 
-  async create() {
-
-  }
-
   async findAll(filters: Productfilter) {
     // Organize Order
     let orderBy = {};
