@@ -10,7 +10,6 @@ export class WebhookService {
   private stripe: Stripe;
 
   constructor(
-    private readonly prisma: PrismaService,
     private readonly configService: ConfigService,
     private readonly orderService: OrderService
   ) {
