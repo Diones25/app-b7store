@@ -5,7 +5,7 @@ import { getAbsoluteImageUrl } from '../utils/get-absolute-image-url';
 import { ProductIdParamDto } from './dto/productId-param-dto';
 import { ProductIdParamRelatedDto } from './dto/productId-param-related-dto';
 import { ProductsQueryRelatedDto } from './dto/products-query-related-dto';
-import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiQuery } from '@nestjs/swagger';
 
 @Controller('products')
 export class ProductsController {
@@ -19,6 +19,9 @@ export class ProductsController {
     summary: 'Listar produtos',
     description: 'Retorna uma lista de produtos cadastrados no sistema',
   })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Número máximo de produtos a serem retornados' })
+  @ApiQuery({ name: 'metadata', required: false, type: String, description: 'Metadados dos produtos' })
+  @ApiQuery({ name: 'orderBy', required: false, enum: ['views', 'selling', 'price'], description: 'Ordenação dos produtos' })
   @ApiResponse({
     status: 200,
     description: 'Produtos encontrados com sucesso',
@@ -117,6 +120,7 @@ export class ProductsController {
     description: 'Retorna uma lista de produtos relacionados cadastrados no sistema apartir de um id da categoria',
   })
   @ApiParam({ name: 'id', type: Number, required: true, description: 'ID da categoria' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Número máximo de produtos a serem retornados' })
   @ApiResponse({
     status: 200,
     description: 'Produtos encontrados com sucesso',
