@@ -148,9 +148,9 @@ export class ProductsController {
   })
   @ApiResponse({
     status: 404,
-    description: 'Produto não encontrado',
+    description: 'Categoria não encontrad',
     example: {
-      message: 'Produto com id 6 não encontrado.',
+      message: 'Categoria com id 6 não encontrado.',
       error: 'Not Found',
       statusCode: 404
     }
