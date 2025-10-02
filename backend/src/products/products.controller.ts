@@ -5,6 +5,7 @@ import { getAbsoluteImageUrl } from '../utils/get-absolute-image-url';
 import { ProductIdParamDto } from './dto/productId-param-dto';
 import { ProductIdParamRelatedDto } from './dto/productId-param-related-dto';
 import { ProductsQueryRelatedDto } from './dto/products-query-related-dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('products')
 export class ProductsController {
@@ -14,6 +15,30 @@ export class ProductsController {
   ) { }
 
   @Get()
+  @ApiOperation({
+    summary: 'Listar produtos',
+    description: 'Retorna uma lista de produtos cadastrados no sistema',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Produtos encontrados com sucesso',
+    example: [
+      {
+        "id": 1,
+        "label": "Camisa PHP",
+        "price": 69.9,
+        "image": "http://localhost:3001/media/products/product_1_2.jpg",
+        "liked": false
+      },
+      {
+        "id": 3,
+        "label": "Camisa React",
+        "price": 94.5,
+        "image": "http://localhost:3001/media/products/product_3_1.jpg",
+        "liked": false
+      },
+    ]
+  })
   async findAll(@Query() query: ProductsQueryDto) {
     const parsedLimit = query.limit ? parseInt(query.limit) : undefined;
     const parsedMetadata = query.metadata ? JSON.parse(query.metadata) : undefined;
